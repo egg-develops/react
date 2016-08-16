@@ -1,15 +1,17 @@
 // create seperate components for each functionality of App
 // Single Responsiblity Principle:
-// smaller, maintainable,...
+// smaller, testable, maintainable,...
 
 // Message Component
-// Presentational Components
+// Presentational Components (don't maintain state (dummy compoenents))
 var GreeterMessage = React.createClass({
   render: function () {
+    var name = this.props.name;
+    var message = this.props.message;
     return (
       <div>
-        <h1>Some H1</h1>
-        <p>Some Paragraph</p>
+        <h1>Hello {name}!</h1>
+        <p>Express your {message}</p>
       </div>
     );
   }
@@ -17,10 +19,21 @@ var GreeterMessage = React.createClass({
 
 // Form Component
 var GreeterForm = React.createClass({
+  onFormSubmit: function (e) {
+      e.preventDefault();
+
+      var name = this.refs.name.value;
+
+      if (name.length > 0) {
+        this.refs.name.value = '';
+        this.props.onNewName(name);
+      }
+  },
+
   render: function() {
     return (
       <div>
-      <form>
+      <form onSubmit={this.onFormSubmit}>
         <input type="text" ref="name"/>
         <button>Set Name</button>
       </form>
@@ -35,7 +48,7 @@ var Greeter = React.createClass({
   getDefaultProps: function() {
     return {
       name: 'React',
-      msg: 'Default Message'
+      message: 'Default Message'
     };
   },
   getInitialState: function() {
@@ -44,45 +57,26 @@ var Greeter = React.createClass({
     };
   },
 
-  onButtonClick: function(e) {
-    e.preventDefault();
-
-    var nameRef = this.refs.name;
-    var name = nameRef.value;
-    nameRef.value = '';
-
-    if (typeof name === 'string' && name.length > 0) {
+  handleNewName: function(name) {
       this.setState({
         name: name
       });
-    }
   },
 
 
   render: function() {
     var name = this.state.name;
-    var msg = this.props.msg;
+    var message = this.props.message;
 
     return (
       <div>
-        <h1>Hello {name}!</h1>
-        <p>My First React App</p>
-        <p>{msg + ' !'}</p>
+{/* Render (to screen) Message Component
+  Same as ReactDOM.render*/}
+        <GreeterMessage name={name} message={message}/>
 
-// Render (to screen) Message Component
-// Same as ReactDOM.render
-        <GreeterMessage/>
-
-
-        <form onSubmit={this.onButtonClick}>
-          <input type="text" ref="name"/>
-          <button>Set Name</button>
-        </form>
-
-// Render (to screen) Initialize Form Component
-// same as ReactDOM.render
-        <GreeterForm/>
-
+{/*Render (to screen) Initialize Form Component
+ Same as ReactDOM.render*/}
+        <GreeterForm onNewName={this.handleNewName}/>
       </div>
 
 
