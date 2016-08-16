@@ -1,3 +1,9 @@
+// create seperate components for each functionality of App
+// Single Responsiblity Principle:
+// smaller, maintainable,...
+
+// Message Component
+// Presentational Components
 var GreeterMessage = React.createClass({
   render: function () {
     return (
@@ -9,6 +15,7 @@ var GreeterMessage = React.createClass({
   }
 });
 
+// Form Component
 var GreeterForm = React.createClass({
   render: function() {
     return (
@@ -22,6 +29,8 @@ var GreeterForm = React.createClass({
   }
 });
 
+// Main Greeter Component
+// Container Component - maintains state render children
 var Greeter = React.createClass({
   getDefaultProps: function() {
     return {
@@ -60,6 +69,8 @@ var Greeter = React.createClass({
         <p>My First React App</p>
         <p>{msg + ' !'}</p>
 
+// Render (to screen) Message Component
+// Same as ReactDOM.render
         <GreeterMessage/>
 
 
@@ -68,6 +79,8 @@ var Greeter = React.createClass({
           <button>Set Name</button>
         </form>
 
+// Render (to screen) Initialize Form Component
+// same as ReactDOM.render
         <GreeterForm/>
 
       </div>
